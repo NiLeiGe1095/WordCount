@@ -1,39 +1,52 @@
-﻿#include <stdlib.h>
-#include <stdio.h>
+﻿#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #pragma warning(disable:4996)
 int main(int argc, char *argv[])
 {
-	int ch, count = 1;
-	FILE *pt;    //文件指针
+	FILE *fp;    //文件指针
+	int ch;
+	int num = 0;
+
 
 	// 判断是否输入文件
-	if (argc != 3) {
+	if (argc != 3)
+	{
 		printf("请使用格式: %s 文件名", argv[0]);
-		exit(1);    //非正常退出
+		exit(1); 
 	}
 
 	// 判断能否成功打开文件
-	if ((pt = fopen(argv[2], "r")) == NULL) {  //将argv[1]赋值给指针pt
+	if ((fp = fopen(argv[2], "r")) == NULL)
+	{
 		printf("打开文件 %s 失败", argv[2]);
 		exit(1);
 	}
 
-	if (strcmp(argv[1], "-c") == 0) {
-		count = 0;
-		while ((ch = getc(pt)) != EOF) {  //EOF 表示文件结束
-			count++;
+	if (strcmp(argv[1], "-c") == 0)
+	{
+		while ((ch = getc(fp)) != EOF)
+		{  //EOF 表示文件结束
+			num++;
 		}
-		printf("字符数：%d个\n", count);
+		printf("字符数：%d个\n", num);
 	}
-	else {
-		while ((ch = getc(pt)) != EOF) {
+	else if(strcmp(argv[1], "-w") == 0)
+	{
+		while ((ch = getc(fp)) != EOF)
+		{
 			if ((ch == ' ') || (ch == ','))
-				count++;
+			{
+				num++;
+			}
 		}
-		printf("单词数：%d个\n", count);
+		printf("单词数：%d个\n", num+1);
 	}
-	fclose(pt);
+	else
+	{
+		printf("输入格式不正确");
+	}
+	fclose(fp);
 	return 0;
 }
 
